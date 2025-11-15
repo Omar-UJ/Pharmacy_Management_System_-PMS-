@@ -27,7 +27,7 @@ It automates inventory management, stock control, prescription handling, and rep
 ## Technologies Used
 **Frontend:** .NET Framework (C# Desktop Application)  
 **Database:** Microsoft SQL Server  
-**Languages:** C#, JavaScript  
+**Languages:** C#, Java ,SQL  
 **Development Tools:** Visual Studio, NetBeans (for Java utilities if needed), SQL Server Management Studio  
 
 
