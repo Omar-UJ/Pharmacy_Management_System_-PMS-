@@ -37,14 +37,13 @@ It automates inventory management, stock control, prescription handling, and rep
 Here are sample screenshots of the system:
 
 <div style="display:flex; flex-wrap: wrap; gap: 10px;">
-  <img src="images/screenshot1.png" width="250"/>
-  <img src="images/screenshot2.png" width="250"/>
-  <img src="images/screenshot3.png" width="250"/>
-  <img src="images/screenshot4.png" width="250"/>
-  <img src="images/screenshot5.png" width="250"/>
-  <img src="images/screenshot6.png" width="250"/>
-  <img src="images/screenshot7.png" width="250"/>
-  <img src="images/screenshot8.png" width="250"/>
+  <img src="img/1.png" width="250"/>
+  <img src="img/2.png" width="250"/>
+  <img src="img/3.png" width="250"/>
+  <img src="img/4.png" width="250"/>
+  <img src="img/5.png" width="250"/>
+  <img src="img/6.png" width="250"/>
+  <img src="img/7.png" width="250"/>
 </div>
 
 
