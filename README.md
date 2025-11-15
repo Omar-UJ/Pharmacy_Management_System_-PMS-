@@ -49,8 +49,5 @@ Here are some sample screenshots of the system:
   <img src="images/screenshot8.png" width="250"/>
 </div>
 
-> Replace the paths (`images/screenshotX.png`) with the actual file paths in your repo.
-
----
 
 ## Project Structure
