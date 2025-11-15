@@ -61,4 +61,3 @@ Here are sample screenshots of the system:
 
 ---
 
-## Project Structure
