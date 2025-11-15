@@ -1,16 +1,15 @@
+/*
+Prepared By RCD2012D
+Umer Jemal 
+Yared Mekite
+*/
+
+
+	/*Database*/
 CREATE DATABASE PMS;
 
 
-
-
-
-
-
-
-
-
-
-
+/*Pharmacy table*/
 
 
 
@@ -24,23 +23,12 @@ p_sdate date NOT NULL,
 p_city varchar(150),
 p_address varchar(150)NOT NULL,
 totalEmp int,
-m_activation_code varchar(250) NOT NULL
+m_activation_code varchar(250) NOT NULL,
+e_reset_key varchar(150)
 );
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+   /*Manager table*/
 
 
 CREATE TABLE MANAGER(
@@ -60,22 +48,7 @@ ON DELETE CASCADE ON UPDATE CASCADE
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*Item table*/
 
 CREATE TABLE ITEM(
 i_id INT PRIMARY KEY IDENTITY(1000,7),
@@ -97,20 +70,7 @@ ON DELETE CASCADE ON UPDATE CASCADE
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*Expire Item table*/
 
 CREATE TABLE EXP_ITEM(
 i_id INT NOT NULL,
@@ -133,19 +93,7 @@ ON DELETE CASCADE ON UPDATE CASCADE
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*Cashier table*/
 
 CREATE TABLE CASHIER(
 ca_id INT PRIMARY KEY IDENTITY(1050,1),
@@ -160,27 +108,13 @@ ca_gender  varchar(10) NOT NULL,
 ca_status  varchar(10) NOT NULL,
 ca_salary  float NOT NULL,
 p_id int NOT NULL,
+ca_profile_pic varbinary(max),
 FOREIGN KEY (p_id) REFERENCES PHARMACY(p_id)
 ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*Pharmacist table*/
 
 CREATE TABLE PHARMACIST(
 ph_id INT PRIMARY KEY IDENTITY(1700,1),
@@ -195,25 +129,14 @@ ph_gender  varchar(10) NOT NULL,
 ph_status  varchar(10) NOT NULL,
 ph_salary  float NOT NULL,
 p_id int NOT NULL,
+ph_profile_pic varbinary(max),
 FOREIGN KEY (p_id) REFERENCES PHARMACY(p_id)
 ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*Others table*/
 
 CREATE TABLE OTHERS(
 oe_id INT PRIMARY KEY IDENTITY(20112,1),
@@ -228,22 +151,13 @@ oe_status  varchar(10) NOT NULL,
 oe_job_pos varchar(150)NOT NULL,
 oe_salary  float NOT NULL,
 p_id int NOT NULL,
+oe_profile_pic varbinary(max),
 FOREIGN KEY (p_id) REFERENCES PHARMACY(p_id)
 ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
-
-
-
-
-
-
-
-
-
-
-
+/*TRANSACTION RECORD table*/
 
 CREATE TABLE TRANSACTION_RECORD(
 t_id INT PRIMARY KEY IDENTITY(20224,7),
@@ -269,24 +183,7 @@ ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*Expire Items procedure*/
 
 Create procedure EXP_ITEMS
 @i_expdate  varchar(150) , @p_id int
@@ -300,6 +197,8 @@ ORDER BY
 i_sdate;
 
 
+/*All TRANSACTION Report procedure*/
+
 Create procedure TRAN_REPORT
 @p_id int
 AS
@@ -310,6 +209,7 @@ ORDER BY
 pur_date;
 
 
+/*Expired Items report procedure*/
 
 Create procedure EXP_REPORT
 AS
@@ -320,7 +220,7 @@ ORDER BY
 removed_date;
 
 
-
+/*All Todays TRANSACTION Report procedure*/
 Create procedure TD_TRAN_REPORT
 @p_id int,@date DATE
 AS
@@ -328,14 +228,23 @@ SELECT
 * FROM
 TRANSACTION_RECORD
 WHERE
-pur_date=@date and p_id=@p_id 
+pur_date=@date AND p_id=@p_id 
 ORDER BY
 i_qty;
+/*All selected TRANSACTION Report procedure*/
+Create procedure SELECTED_TRAN_REPORT
+@p_id int,@sdate DATE,@edate DATE
+AS
+SELECT
+* FROM
+TRANSACTION_RECORD
+WHERE
+pur_date>=@sdate  AND pur_date<=@edate  AND p_id=@p_id 
+ORDER BY
+pur_date;
 
 
-
-TD_TRAN_REPORT 1,'2022-06-16'
-
+/*All out off stock items Report procedure*/
 Create procedure OUT_OFF_STOCK_ITEMS
 @i_qty  varchar(150) , @p_id int
 AS
@@ -349,7 +258,7 @@ i_qty;
 
 
 
-
+/*All out stock items  view*/
 Create VIEW VIEW_OOSI
 AS
 SELECT
@@ -359,7 +268,7 @@ ITEM
 
 
 
-
+/*All Items  View*/
 
 Create VIEW VIEW_ITEMS
 AS
@@ -376,7 +285,7 @@ i_qty>0
 
 
 
-
+/*Remove Expire Items to EXP_ITEM table TRIGGER*/
 CREATE TRIGGER EXP_AUDIT
 ON ITEM
 FOR DELETE
@@ -389,26 +298,5 @@ i_sdate,i_import_date,i_expdate,i_qty,m_id,p_id,removed_date
 )
 SELECT
 d.i_id,d.i_name,d.i_descr,d.i_pur_price,i_sell_price,d.i_sdate,i_import_date,d.i_expdate,d.i_qty,d.m_id,p_id,GETDATE()
-FROM deleted d
-END
-
-
-
-
-
-
-
-CREATE TRIGGER TRANSACTION_AUDIT
-ON ITEM
-FOR DELETE
-AS
-BEGIN
-SET NOCOUNT ON;
-INSERT INTO TRANSACTION_RECORD(
-i_id,i_name,i_descr,i_price,
-i_sdate,i_expdate,i_qty,m_id,p_id,pur_date,total_price,ph_id
-)
-SELECT
-d.i_id,d.i_name,d.i_descr,d.i_price,d.i_sdate,d.i_expdate,d.i_qty,d.m_id,d.p_id,GETDATE()
 FROM deleted d
 END
