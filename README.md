@@ -37,7 +37,7 @@ It automates inventory management, stock control, prescription handling, and rep
 A detailed **User Manual** is available for the Pharmacy Management System, which provides instructions on installation, usage, and troubleshooting.  
 
 
-[Download Manger Manual](doc/Manager_manual.pdf)
+[Download Manager Manual](doc/Manager_manual.pdf)
 [Download Cashier Manual](doc/CashierManual.pdf)
 [Download Pharmacist Manual](doc/PharmacistManual.pdf)
 
